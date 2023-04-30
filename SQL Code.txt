@@ -1,0 +1,23 @@
+CREATE DATABASE `ibdms_server` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE TABLE `drone` (
+  `id` int NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `xpos` int DEFAULT NULL,
+  `ypos` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `fire` (
+  `id` int NOT NULL,
+  `isActive` int NOT NULL,
+  `intensity` int DEFAULT NULL,
+  `burningAreaRadius` decimal(10,0) DEFAULT NULL,
+  `xpos` int DEFAULT NULL,
+  `ypos` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `firetrucks` (
+  `id` int NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `designatedFireId` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
