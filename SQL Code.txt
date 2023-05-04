@@ -1,23 +1,43 @@
-CREATE DATABASE `ibdms_server` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-CREATE TABLE `drone` (
-  `id` int NOT NULL,
-  `name` varchar(45) NOT NULL,
-  `xpos` int DEFAULT NULL,
-  `ypos` int DEFAULT NULL,
-  PRIMARY KEY (`id`)
+CREATE DATABASE ibdms_server /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+
+USE ibdms_server
+
+CREATE TABLE drone (
+  id int NOT NULL,
+  name varchar(45) NOT NULL,
+  xpos int DEFAULT NULL,
+  ypos int DEFAULT NULL,
+  PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-CREATE TABLE `fire` (
-  `id` int NOT NULL,
-  `isActive` int NOT NULL,
-  `intensity` int DEFAULT NULL,
-  `burningAreaRadius` decimal(10,0) DEFAULT NULL,
-  `xpos` int DEFAULT NULL,
-  `ypos` int DEFAULT NULL,
-  PRIMARY KEY (`id`)
+
+INSERT INTO drone
+VALUES (1, 'drone1', 5, 5),
+		(2, 'drone2', 50, 50),
+		(3, 'drone3', 75, 25);
+
+CREATE TABLE fire (
+  id int NOT NULL,
+  isActive int NOT NULL,
+  intensity int DEFAULT NULL,
+  burningAreaRadius decimal(10,0) DEFAULT NULL,
+  xpos int DEFAULT NULL,
+  ypos int DEFAULT NULL,
+  PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-CREATE TABLE `firetrucks` (
-  `id` int NOT NULL,
-  `name` varchar(45) NOT NULL,
-  `designatedFireId` int DEFAULT NULL,
-  PRIMARY KEY (`id`)
+
+INSERT INTO fire
+VALUES (1, 'fire1', 1, 4, 2.0, 30, 35),
+		(2, 'fire2', 0, 2, 4.5, 40, 80),
+		(3, 'fire3', 1, 6, 10.2, 60, 70);
+
+CREATE TABLE firetrucks (
+  id int NOT NULL,
+  name varchar(45) NOT NULL,
+  designatedFireId int DEFAULT NULL,
+  PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO firetrucks
+VALUES (1, 'fireTruck1', 1),
+		(2, 'fireTruck2', 3),
+		(3, 'fireTruck3', 2);
