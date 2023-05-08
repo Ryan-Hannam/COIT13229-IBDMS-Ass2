@@ -197,7 +197,7 @@ public class Drone extends Thread {
             
     }
     
-    Drone.DroneDetails returnDrone() {
+    Domain.DroneDetails returnDrone() {
         return drone;
     }
     
@@ -217,7 +217,7 @@ public class Drone extends Thread {
         String hostName = "localhost";
         String serverMessage = "";
         String message = "";
-        DroneDetails drone;
+        Domain.DroneDetails drone;
         
         while (true) {
             try {
