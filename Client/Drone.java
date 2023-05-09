@@ -190,7 +190,7 @@ public class Drone extends Thread {
             if (fireRand == 1) {
                 int fireSeverity = rand.nextInt(9) + 1;
                 System.out.println("Fire with Severity " + fireSeverity + " spotted at " + x_pos + ", " + y_pos);
-                Domain.FireDetails fire = new Domain.FireDetails(0, 1, rand.nextInt(6), rand.nextDouble()*100, x_pos, y_pos); //TODO: Fix this generation
+                Domain.FireDetails fire = new Domain.FireDetails(0, 1, rand.nextInt(6), rand.nextDouble()*100, x_pos, y_pos); //TODO: Fix this generation esp. double and feed to database via API
                 fires.add(fire);
             }
         }

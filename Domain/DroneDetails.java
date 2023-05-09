@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author diamo
+ * @author diamo, modified by Group 4
  */
 public class DroneDetails  implements Serializable {
     

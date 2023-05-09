@@ -15,8 +15,6 @@ public class Database {
     public Database() {
         connection = DatabaseConnection.getConnection();
     }
-
-    //TODO: Fill out with each necessary query for Save & Read
     
     public LinkedList<FireDetails> readFire(){
         LinkedList<FireDetails> fireDetails = new LinkedList<>();
@@ -160,4 +158,5 @@ public class Database {
         }
         return false;
     }
+
 }

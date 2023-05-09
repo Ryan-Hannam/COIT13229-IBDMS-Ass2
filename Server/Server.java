@@ -222,6 +222,8 @@ public class Server extends JFrame implements ActionListener, Runnable {
         return recallStatus;
     }
     
+
+
     //begin old, non-database code
 
     // static void addDrone(Domain.DroneDetails tempDrone) {
@@ -427,6 +429,8 @@ public class Server extends JFrame implements ActionListener, Runnable {
     // }
 
     //end old non-database code
+    
+
     
     public void recallDrones() {
         // Checks if a recall is initiated
