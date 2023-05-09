@@ -28,6 +28,7 @@ public class Server extends JFrame implements ActionListener, Runnable {
     // ArrayLists for Drone and Fire Objects
     static ArrayList<Domain.DroneDetails> drones = new ArrayList<>();
     static ArrayList<Domain.FireDetails> fires = new ArrayList<>();
+    static ArrayList<Domain.FiretruckDetails> trucks = new ArrayList<>();
     
     // GUI Setup, all elements of GUI declared
     private JLabel titleText = new JLabel("Drone Server");
@@ -50,8 +51,9 @@ public class Server extends JFrame implements ActionListener, Runnable {
 
         private ArrayList<Domain.DroneDetails> drones;
         private ArrayList<Domain.FireDetails> fires;
+        private ArrayList<Domain.FiretruckDetails> trucks;
 
-        public MapPanel(ArrayList<Domain.DroneDetails> drones, ArrayList<Domain.FireDetails> fires) {
+        public MapPanel(ArrayList<Domain.DroneDetails> drones, ArrayList<Domain.FireDetails> fires, ArrayList<Domain.FiretruckDetails> trucks) {
             this.drones = drones;
             this.fires = fires;
         }
@@ -88,6 +90,19 @@ public class Server extends JFrame implements ActionListener, Runnable {
                 g.fillOval(x - size/2, y - size/2, size, size);
                 g.setColor(Color.BLACK);
                 g.drawString("Fire " + p.getId() + " (" + severity + ")", x - 30, y - 5);
+            }
+			
+            // Draw firetrucks as blue rectangles with truck id
+            for (Domain.FiretruckDetails p : trucks) {              
+                // Converts coordinates for use on 400 by 400 grid
+                int x = (100 - p.getX_pos()) * 2;
+                int y = (100 - p.getY_pos()) * 2;
+                int designatedFireID = p.getDesignatedFireID();
+                int size = 6;
+                g.setColor(Color.BLUE);
+                g.fillRect(x - size/2, y - size/2, size, size);
+                g.setColor(Color.BLACK);
+                g.drawString("Truck " + p.getId(), x - 30, y - 5);          
             }
         }
     }

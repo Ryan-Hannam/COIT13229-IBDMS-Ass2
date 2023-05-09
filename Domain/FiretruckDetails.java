@@ -10,12 +10,16 @@ public class FiretruckDetails implements Serializable {
     // Values in this object
     private int id;
     private String name;
+    private int x_pos;
+    private int y_pos;
     private int designatedFireID;
     
     // Constructor
-    public FiretruckDetails (int id, String name, int designatedFireID) {
+    public FiretruckDetails (int id, String name, int x_pos, int y_pos, int designatedFireID) {
         this.id = id;
         this.name = name;
+        this.x_pos = x_pos;
+        this.y_pos = y_pos;
         this.designatedFireID = designatedFireID;
     }
     
@@ -28,6 +32,14 @@ public class FiretruckDetails implements Serializable {
     public String getName() {
         return name;
     }
+    
+    public int getX_pos() {
+        return x_pos;
+    }
+    
+    public int getY_pos() {
+        return y_pos;
+    }    
     
     public int getDesignatedFireID() {
         return designatedFireID;
@@ -54,6 +66,8 @@ public class FiretruckDetails implements Serializable {
         return 
                "Firetruck ID: " + id + "\n" +
                "Firetruck Name: " + name + "\n" +
+               "X Position: " + x_pos + "\n" +
+               "Y Position: " + y_pos + "\n" +
                "Designated Fire ID: " + designatedFireID + "\n";
     }
 }
