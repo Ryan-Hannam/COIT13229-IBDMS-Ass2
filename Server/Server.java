@@ -67,8 +67,8 @@ public class Server extends JFrame implements ActionListener, Runnable {
             for (Domain.DroneDetails p : drones) {
                 if (p.getActive()) {
                     // Converts coordinates for use on 400 by 400 grid
-                    int x = (100 - p.getX_pos()) * 2;
-                    int y = (100 - p.getY_pos()) * 2;
+                    int x = (100 - p.getXpos()) * 2;
+                    int y = (100 - p.getYpos()) * 2;
                     int size = 10;
                     g.setColor(Color.BLUE);
                     g.fillOval(x - size/2, y - size/2, size, size);
@@ -80,9 +80,9 @@ public class Server extends JFrame implements ActionListener, Runnable {
             // Draw fires as red circles with fire id and severity
             for (Domain.FireDetails p : fires) {
                 // Converts coordinates for use on 400 by 400 grid
-                int x = (100 - p.getX_pos()) * 2;
-                int y = (100 - p.getY_pos()) * 2;
-                int severity = p.getSeverity();
+                int x = (100 - p.getXpos()) * 2;
+                int y = (100 - p.getYpos()) * 2;
+                int severity = p.getIntensity();
                 int size = 10;
                 g.setColor(Color.RED);
                 g.fillOval(x - size/2, y - size/2, size, size);
@@ -177,7 +177,7 @@ public class Server extends JFrame implements ActionListener, Runnable {
         String actionString=e.getActionCommand();
         switch(actionString) {
             case "Delete Fire":
-                deleteFire();
+             //   deleteFire();
                 break;
                 
             case "Recall Drones":
@@ -196,7 +196,7 @@ public class Server extends JFrame implements ActionListener, Runnable {
     
     public static void main(String[] args) {
         // Calls function to read data from files
-        readData();
+       // readData();
         
         // Starts thread to update map and GUI because that's how it works apparently
         Server obj = new Server();
@@ -222,207 +222,211 @@ public class Server extends JFrame implements ActionListener, Runnable {
         return recallStatus;
     }
     
-    static void addDrone(Domain.DroneDetails tempDrone) {
-        // Assumes drone is new until found otherwise
-        boolean newDrone = true;
-        boolean wasActive = false;
-        
-        /* Checks each drone object in the drones ArrayList to see
-        if the ID is already present, if it is just updates that drone's
-        Name, Position and Active Status. If this happens says the drone
-        is not new.
-        */
-        for (Domain.DroneDetails p : drones) {
-                if (p.getId() == tempDrone.getId()) {
-                    
-                    if (p.getActive()) {
-                        wasActive = true;
-                    }
-                    
-                    p.setName(tempDrone.getName());
-                    p.setX_pos(tempDrone.getX_pos());
-                    p.setY_pos(tempDrone.getY_pos());
-                    p.setActive(tempDrone.getActive());
+    //begin old, non-database code
 
-                    newDrone = false;
+    // static void addDrone(Domain.DroneDetails tempDrone) {
+    //     // Assumes drone is new until found otherwise
+    //     boolean newDrone = true;
+    //     boolean wasActive = false;
+        
+    //     /* Checks each drone object in the drones ArrayList to see
+    //     if the ID is already present, if it is just updates that drone's
+    //     Name, Position and Active Status. If this happens says the drone
+    //     is not new.
+    //     */
+    //     for (Domain.DroneDetails p : drones) {
+    //             if (p.getId() == tempDrone.getId()) {
                     
-                    if (p.getActive()) {
+    //                 if (p.getActive()) {
+    //                     wasActive = true;
+    //                 }
+                    
+    //                 p.setName(tempDrone.getName());
+    //                 p.setXpos(tempDrone.getXpos());
+    //                 p.setYpos(tempDrone.getYpos());
+    //                 p.setActive(tempDrone.getActive());
+
+    //                 newDrone = false;
+                    
+    //                 if (p.getActive()) {
                         
-                        if (wasActive) {
-                            outputLog("Drone " + p.getId() + " moved to coordinates: " + p.getX_pos() + ", " + p.getY_pos() + ".");
-                        } else {
-                            outputLog("Drone Reregistered. ID: " + p.getId() + " Name: " + p.getName());
-                        }
-                    } else {
-                        outputLog("Drone " + p.getId() + " recalled.");
-                    }
-                    break;
-                }
-        }
+    //                     if (wasActive) {
+    //                         outputLog("Drone " + p.getId() + " moved to coordinates: " + p.getXpos() + ", " + p.getYpos() + ".");
+    //                     } else {
+    //                         outputLog("Drone Reregistered. ID: " + p.getId() + " Name: " + p.getName());
+    //                     }
+    //                 } else {
+    //                     outputLog("Drone " + p.getId() + " recalled.");
+    //                 }
+    //                 break;
+    //             }
+    //     }
         
-        // If the drone is new, creates the drone object and adds it to the arraylist
-        if (newDrone) {
-            Domain.DroneDetails drone = new Domain.DroneDetails(tempDrone.getId(), tempDrone.getName(), tempDrone.getX_pos(), tempDrone.getY_pos(), tempDrone.getActive());
-            drones.add(drone);
-            outputLog("New Drone Registered. ID: " + drone.getId() + " Name: " + drone.getName());
-        }
+    //     // If the drone is new, creates the drone object and adds it to the arraylist
+    //     if (newDrone) {
+    //         Domain.DroneDetails drone = new Domain.DroneDetails(tempDrone.getId(), tempDrone.getName(), tempDrone.getXpos(), tempDrone.getYpos(), tempDrone.getActive());
+    //         drones.add(drone);
+    //         outputLog("New Drone Registered. ID: " + drone.getId() + " Name: " + drone.getName());
+    //     }
         
-        // System.out.println(drones.size() + " Drone Objects");
-    }
+    //     // System.out.println(drones.size() + " Drone Objects");
+    // }
     
-    static void addFire(Domain.FireDetails tempFire) {
+    // static void addFire(Domain.FireDetails tempFire) {
         
-        /*
-        Assigns ID to the new fire object then adds it to the ArrayList
-        If the fire ArrayList is empty it will just give the Fire an ID of 0
-        If it's not it'll find the highest Fire ID and set it to one above that
-        Then makes a fire object and adds it to the arraylist and prints fire details
-        */
-        if (fires.isEmpty()) {
-            Domain.FireDetails fire = new Domain.FireDetails(0, tempFire.getX_pos(), tempFire.getY_pos(), tempFire.getDroneId(), tempFire.getSeverity());
-            fires.add(fire);
-            outputLog("New Fire Spotted at " + fire.getX_pos() + ", " + fire.getY_pos() + " with severity " + fire.getSeverity() + ".");
-        } else {
-            int max = 0;
+    //     /*
+    //     Assigns ID to the new fire object then adds it to the ArrayList
+    //     If the fire ArrayList is empty it will just give the Fire an ID of 0
+    //     If it's not it'll find the highest Fire ID and set it to one above that
+    //     Then makes a fire object and adds it to the arraylist and prints fire details
+    //     */
+    //     if (fires.isEmpty()) {
+    //         Domain.FireDetails fire = new Domain.FireDetails(0, tempFire.getIsActive(), tempFire.getIntensity(), tempFire.getBurningAreaRadius(), tempFire.getXpos(), tempFire.getYpos());
+    //         fires.add(fire);
+    //         outputLog("New Fire Spotted at " + fire.getXpos() + ", " + fire.getYpos() + " with intensity " + fire.getIntensity() + " burning area radius " + fire.getBurningAreaRadius() + ".");
+    //     } else {
+    //         int max = 0;
             
-            for (Domain.FireDetails p : fires) {
-                if (p.getId() > max) {
-                    max = p.getId();
-                }
-            }
+    //         for (Domain.FireDetails p : fires) {
+    //             if (p.getId() > max) {
+    //                 max = p.getId();
+    //             }
+    //         }
             
-            int fireId = max + 1;
+    //         int fireId = max + 1;
             
-            Domain.FireDetails fire = new Domain.FireDetails(fireId, tempFire.getX_pos(), tempFire.getY_pos(), tempFire.getDroneId(), tempFire.getSeverity());
-            fires.add(fire);
-            outputLog("New Fire Spotted at " + fire.getX_pos() + ", " + fire.getY_pos() + " with severity " + fire.getSeverity() + ".");
-        }
+    //         Domain.FireDetails fire = new Domain.FireDetails(fireId, tempFire.getIsActive(), tempFire.getIntensity(), tempFire.getBurningAreaRadius(), tempFire.getXpos(), tempFire.getYpos());
+    //         fires.add(fire);
+    //         outputLog("New Fire Spotted at " + fire.getXpos() + ", " + fire.getYpos() + " with intensity " + fire.getIntensity() + " burning area radius " + fire.getBurningAreaRadius() + ".");
+    //     }
         
         
         
-    }
+    // }
     
-    static void readData() {
-        // Reads ArrayList from binary file drones.bin
-        try (
-            FileInputStream fileIn = new FileInputStream("drones.bin");
-            ObjectInputStream objectIn = new ObjectInputStream(fileIn)) {
+    // static void readData() {
+    //     // Reads ArrayList from binary file drones.bin
+    //     try (
+    //         FileInputStream fileIn = new FileInputStream("drones.bin");
+    //         ObjectInputStream objectIn = new ObjectInputStream(fileIn)) {
             
-            ArrayList<Domain.DroneDetails> tempDrones = (ArrayList<Domain.DroneDetails>) objectIn.readObject();
-            /* If the file is empty the tempDrones arraylist will be null
-            If this is the case it will not set this temp arraylist to be
-            the main arraylist. */
-            if (tempDrones != null) {
-                drones = tempDrones;
-            }
+    //         ArrayList<Domain.DroneDetails> tempDrones = (ArrayList<Domain.DroneDetails>) objectIn.readObject();
+    //         /* If the file is empty the tempDrones arraylist will be null
+    //         If this is the case it will not set this temp arraylist to be
+    //         the main arraylist. */
+    //         if (tempDrones != null) {
+    //             drones = tempDrones;
+    //         }
             
-        } catch(EOFException | FileNotFoundException e) {
-        } catch(IOException e) {e.printStackTrace();
-	} catch(ClassNotFoundException ex){ex.printStackTrace();
-        }
+    //     } catch(EOFException | FileNotFoundException e) {
+    //     } catch(IOException e) {e.printStackTrace();
+	// } catch(ClassNotFoundException ex){ex.printStackTrace();
+    //     }
         
-        outputLog(drones.size() + " drones loaded.");
+    //     outputLog(drones.size() + " drones loaded.");
         
-        // Reads file, each variable it checks is seperated by the delimiter, the comma
-        // Gets variables from each line and adds it to a fire object then the ArrayList
-        String line = "";
-        String csvDelimiter = ",";
+    //     // Reads file, each variable it checks is seperated by the delimiter, the comma
+    //     // Gets variables from each line and adds it to a fire object then the ArrayList
+    //     String line = "";
+    //     String csvDelimiter = ",";
         
-        try (BufferedReader br = new BufferedReader(new FileReader("fires.csv"))) {
+    //     try (BufferedReader br = new BufferedReader(new FileReader("fires.csv"))) {
         
-            // Read heading line
-            br.readLine();
+    //         // Read heading line
+    //         br.readLine();
             
-            // Read remaining lines
-            while ((line = br.readLine()) != null) {
-               String[] data = line.split(csvDelimiter);
-               int id = Integer.parseInt(data[0]);
-               int x_pos = Integer.parseInt(data[1]);
-               int y_pos = Integer.parseInt(data[2]);
-               int droneId = Integer.parseInt(data[3]);
-               int severity = Integer.parseInt(data[4]);
+    //         // Read remaining lines
+    //         while ((line = br.readLine()) != null) {
+    //            String[] data = line.split(csvDelimiter);
+    //            int id = Integer.parseInt(data[0]);
+    //            int xpos = Integer.parseInt(data[1]);
+    //            int ypos = Integer.parseInt(data[2]);
+    //            int droneId = Integer.parseInt(data[3]);
+    //            int severity = Integer.parseInt(data[4]);
 
-               Domain.FireDetails fire = new Domain.FireDetails(id, x_pos, y_pos, droneId, severity);
-               fires.add(fire);
-         }
-        } catch (IOException e) {
-           e.printStackTrace();
-        } catch (NumberFormatException e) { e.printStackTrace();
-        }
+    //            Domain.FireDetails fire = new Domain.FireDetails(id, isActive, intensity, burningAreaRadius, xpos, ypos);
+    //            fires.add(fire);
+    //      }
+    //     } catch (IOException e) {
+    //        e.printStackTrace();
+    //     } catch (NumberFormatException e) { e.printStackTrace();
+    //     }
         
-        outputLog(fires.size() + " fires loaded.");
-    }
+    //     outputLog(fires.size() + " fires loaded.");
+    // }
     
-    static void saveData() {
-        // Saves drones arraylist to drones.bin
-        try (
-            FileOutputStream fileOut = new FileOutputStream("drones.bin");
-            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)
-            ) {
-            objectOut.writeObject(drones);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    // static void saveData() {
+    //     // Saves drones arraylist to drones.bin
+    //     try (
+    //         FileOutputStream fileOut = new FileOutputStream("drones.bin");
+    //         ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)
+    //         ) {
+    //         objectOut.writeObject(drones);
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }
         
-        // Saves each object in fires ArrayList to fires.csv
-        // Uses object .toCSV() to format the string with variables having commas between
-        try {
-            FileWriter writer = new FileWriter("fires.csv", false);
+    //     // Saves each object in fires ArrayList to fires.csv
+    //     // Uses object .toCSV() to format the string with variables having commas between
+    //     try {
+    //         FileWriter writer = new FileWriter("fires.csv", false);
             
-            // Writes heading line with column names
-            writer.write("Fire ID,X Position,Y Position,Reporting Drone ID,Severity\n");
+    //         // Writes heading line with column names
+    //         writer.write("Fire ID,X Position,Y Position,Reporting Drone ID,Severity\n");
             
-            for (Domain.FireDetails p : fires) {
-                writer.write(p.toCSV() + "\n");
-            }
-            writer.close();
-        } catch(IOException e) {e.printStackTrace();
-        }
-    }
+    //         for (Domain.FireDetails p : fires) {
+    //             writer.write(p.toCSV() + "\n");
+    //         }
+    //         writer.close();
+    //     } catch(IOException e) {e.printStackTrace();
+    //     }
+    // }
     
-    public void deleteFire() {
-        // Triggered by Delete Fire Button
-        // intId is the id that'll be entered
-        int intId = -1;
+    // public void deleteFire() {
+    //     // Triggered by Delete Fire Button
+    //     // intId is the id that'll be entered
+    //     int intId = -1;
         
-        /*
-        Opens Option Pane prompting for a Fire ID
-        If cancel is pressed, null will be returned causing the loop to break
-        otherwise it'll attempt to parse the ID to int, if this fails the user will be reprompted after an error message
-        */
-        while (true) {
-            String enteredId = JOptionPane.showInputDialog(null, "Enter a Fire ID");
-            if (enteredId == null) {
-                return;
-            }
-            try {
-                intId = Integer.parseInt(enteredId);
-                break;
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "ID must be numerical.");
-            }
-        }
+    //     /*
+    //     Opens Option Pane prompting for a Fire ID
+    //     If cancel is pressed, null will be returned causing the loop to break
+    //     otherwise it'll attempt to parse the ID to int, if this fails the user will be reprompted after an error message
+    //     */
+    //     while (true) {
+    //         String enteredId = JOptionPane.showInputDialog(null, "Enter a Fire ID");
+    //         if (enteredId == null) {
+    //             return;
+    //         }
+    //         try {
+    //             intId = Integer.parseInt(enteredId);
+    //             break;
+    //         } catch (NumberFormatException e) {
+    //             JOptionPane.showMessageDialog(null, "ID must be numerical.");
+    //         }
+    //     }
         
-        // Iterator goes through ArrayList until it finds the ID, removes the object from ArrayList
-        // Originally used a for loop, didn't work for some reason
-        // If fire existed sets boolean to true, else will output no fire found message
-        boolean fireExists = false;
+    //     // Iterator goes through ArrayList until it finds the ID, removes the object from ArrayList
+    //     // Originally used a for loop, didn't work for some reason
+    //     // If fire existed sets boolean to true, else will output no fire found message
+    //     boolean fireExists = false;
         
-        Iterator<Domain.FireDetails> iterator = fires.iterator();
-            while (iterator.hasNext()) {
-                Domain.FireDetails p = iterator.next();
-                if (p.getId() == intId) {
-                    iterator.remove();
-                    outputLog("Fire " + intId + " removed.");
-                    fireExists = true;
-                    break;
-            }
-        }
+    //     Iterator<Domain.FireDetails> iterator = fires.iterator();
+    //         while (iterator.hasNext()) {
+    //             Domain.FireDetails p = iterator.next();
+    //             if (p.getId() == intId) {
+    //                 iterator.remove();
+    //                 outputLog("Fire " + intId + " removed.");
+    //                 fireExists = true;
+    //                 break;
+    //         }
+    //     }
         
-        if (!fireExists) {
-            outputLog("Fire " + intId + " not found.");
-        }
-    }
+    //     if (!fireExists) {
+    //         outputLog("Fire " + intId + " not found.");
+    //     }
+    // }
+
+    //end old non-database code
     
     public void recallDrones() {
         // Checks if a recall is initiated
@@ -544,7 +548,7 @@ public class Server extends JFrame implements ActionListener, Runnable {
             
             if (!dronesActive) {
                 outputLog("Shut Down Commencing.");
-                saveData();
+               // saveData();
                 System.exit(0);
             }
         }
@@ -613,7 +617,7 @@ class Connection extends Thread {
             if (numFires > 0) {
                 for (int i = 0; i < numFires; i++) {
                     Domain.FireDetails tempFire = (Domain.FireDetails)in.readObject();
-                    Server.addFire(tempFire);
+                    //Server.addFire(tempFire);
                     message = "confirmed";
                     out.writeObject(message);
                 }
@@ -624,7 +628,7 @@ class Connection extends Thread {
             for (Integer i : Server.newXPositions.keySet()) {
                 if (i == tempDrone.getId()) {
                     movementRequired = true;
-                    tempDrone.setX_pos(Server.newXPositions.get(i));
+                   // tempDrone.setX_pos(Server.newXPositions.get(i));
                     Server.newXPositions.remove(i);
                 }
             }
@@ -632,27 +636,27 @@ class Connection extends Thread {
             for (Integer i : Server.newYPositions.keySet()) {
                 if (i == tempDrone.getId()) {
                     movementRequired = true;
-                    tempDrone.setY_pos(Server.newYPositions.get(i));
+                   // tempDrone.setY_pos(Server.newYPositions.get(i));
                     Server.newYPositions.remove(i);
                 }
             }
             
             // Check x positions, set if out of bounds
-            if (tempDrone.getX_pos() > 100) {
+            if (tempDrone.getXpos() > 100) {
                 outOfBounds = true;
-                tempDrone.setX_pos(80);
-            } else if (tempDrone.getX_pos() < -100) {
+                //tempDrone.setX_pos(80);
+            } else if (tempDrone.getXpos() < -100) {
                 outOfBounds = true;
-                tempDrone.setX_pos(-80);
+               // tempDrone.setX_pos(-80);
             }
             
             // Check y positions, set if out of bounds
-            if (tempDrone.getY_pos() > 100) {
+            if (tempDrone.getYpos() > 100) {
                 outOfBounds = true;
-                tempDrone.setY_pos(80);
-            } else if (tempDrone.getY_pos() < -100) {
+               // tempDrone.setY_pos(80);
+            } else if (tempDrone.getYpos() < -100) {
                 outOfBounds = true;
-                tempDrone.setY_pos(-80);
+              //  tempDrone.setY_pos(-80);
             }
             
             // If a Recall is active it will respond to the client saying so
@@ -664,17 +668,17 @@ class Connection extends Thread {
                 if (clientMessage.equals("Recall Confirmed")) {
                     // If drone confirms recall, set the drone active to false
                     tempDrone.setActive(false);
-                    tempDrone.setX_pos(0);
-                    tempDrone.setY_pos(0);
+                   // tempDrone.setX_pos(0);
+                   // tempDrone.setY_pos(0);
                 }
             } else if (movementRequired || outOfBounds) {
                 // Sends move message and receives confirmation between object writes
                 message = "move";
                 out.writeObject(message);
                 clientMessage = (String)in.readObject();
-                out.writeObject(tempDrone.getX_pos());
+                out.writeObject(tempDrone.getXpos());
                 clientMessage = (String)in.readObject();
-                out.writeObject(tempDrone.getY_pos());
+                out.writeObject(tempDrone.getYpos());
                 clientMessage = (String)in.readObject();
                 
                 // Messages outputed based on if the drone was moved or out of bounds
@@ -693,7 +697,7 @@ class Connection extends Thread {
             }
             
             // Sends tempDrone to the addDrone function to get it in the ArrayList
-            Server.addDrone(tempDrone);
+            // Server.addDrone(tempDrone);
             
             System.out.println(tempDrone);
             

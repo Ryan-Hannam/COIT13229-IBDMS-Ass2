@@ -182,15 +182,15 @@ public class Drone extends Thread {
             movements++;
             
             // Sets drone object's positions to new ones
-            drone.setX_pos(x_pos);
-            drone.setY_pos(y_pos);
+            drone.setXpos(x_pos);
+            drone.setYpos(y_pos);
             
             // Makes random number up to 100, if the number is 1 reports that there's a fire at the position
             int fireRand = rand.nextInt(100);
             if (fireRand == 1) {
                 int fireSeverity = rand.nextInt(9) + 1;
                 System.out.println("Fire with Severity " + fireSeverity + " spotted at " + x_pos + ", " + y_pos);
-                Domain.FireDetails fire = new Domain.FireDetails(0, x_pos, y_pos, id, fireSeverity);
+                Domain.FireDetails fire = new Domain.FireDetails(0, 1, rand.nextInt(6), rand.nextDouble()*100, x_pos, y_pos); //TODO: Fix this generation
                 fires.add(fire);
             }
         }
