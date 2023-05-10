@@ -56,6 +56,7 @@ public class Server extends JFrame implements ActionListener, Runnable {
         public MapPanel(ArrayList<Domain.DroneDetails> drones, ArrayList<Domain.FireDetails> fires, ArrayList<Domain.FiretruckDetails> trucks) {
             this.drones = drones;
             this.fires = fires;
+			this.trucks = trucks;
         }
 
         @Override
@@ -93,20 +94,18 @@ public class Server extends JFrame implements ActionListener, Runnable {
             }
 			
             // Draw firetrucks as blue rectangles with truck id
-            for (Domain.FiretruckDetails p : trucks) {              
-                // Converts coordinates for use on 400 by 400 grid
-                
-                //TODO: These co-ords need to come from the designated fire for the firetucks. e.g.: f.getX_Pos() and then move the firetruck adjacent (+4 ??)
-                
-                // int x = (100 - p.getX_pos()) * 2;
-                // int y = (100 - p.getY_pos()) * 2;
-                int designatedFireID = p.getDesignatedFireID();
-                int size = 6;
+            for (Domain.FiretruckDetails p : trucks) {   
+                //get the designated fire details
+                Domain.FireDetails f = fires.get(p.getDesignatedFireID()); 
+                //add 14 pixels to the x position to move the rectangle adjacent to the fire truck
+                int x = (100 - f.getXpos()) * 2 + 14; 
+                int y = (100 - f.getYpos()) * 2;
+                int size = 20;
                 g.setColor(Color.BLUE);
                 g.fillRect(x - size/2, y - size/2, size, size);
                 g.setColor(Color.BLACK);
                 g.drawString("Truck " + p.getId(), x - 30, y - 5);          
-            }
+            }  
         }
     }
     
