@@ -95,8 +95,11 @@ public class Server extends JFrame implements ActionListener, Runnable {
             // Draw firetrucks as blue rectangles with truck id
             for (Domain.FiretruckDetails p : trucks) {              
                 // Converts coordinates for use on 400 by 400 grid
-                int x = (100 - p.getX_pos()) * 2;
-                int y = (100 - p.getY_pos()) * 2;
+                
+                //TODO: These co-ords need to come from the designated fire for the firetucks. e.g.: f.getX_Pos() and then move the firetruck adjacent (+4 ??)
+                
+                // int x = (100 - p.getX_pos()) * 2;
+                // int y = (100 - p.getY_pos()) * 2;
                 int designatedFireID = p.getDesignatedFireID();
                 int size = 6;
                 g.setColor(Color.BLUE);
