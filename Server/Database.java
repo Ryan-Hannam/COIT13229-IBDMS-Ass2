@@ -159,4 +159,18 @@ public class Database {
         return false;
     }
 
+    public boolean searchDroneID(DroneDetails drone){
+        try{
+            String query = "SELECT * FROM drone WHERE id ='" +drone.getId()+"'";
+            PreparedStatement statement = connection.prepareStatement(query);
+            int rowsFound = statement.executeUpdate();
+            if(rowsFound == 1){
+                return true;
+            }
+        }
+        catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
 }

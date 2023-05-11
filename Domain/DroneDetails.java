@@ -33,6 +33,15 @@ public class DroneDetails  implements Serializable {
         this.ypos = ypos;
         this.active = active;
     }
+
+    //Constructor if Drone already exists likely to make this the default once isActive gets fixed
+
+    public DroneDetails (int id, String name, int xpos, int ypos) {
+        this.id = id;
+        this.name = name;
+        this.xpos = xpos;
+        this.ypos = ypos;
+    }
     
     // Accessors / Getters
     
