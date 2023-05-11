@@ -1,8 +1,4 @@
-package Server;
-
-import Domain.FireDetails;
-import Domain.DroneDetails;
-import Domain.FiretruckDetails;
+package Domain;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -159,6 +155,7 @@ public class Database {
         return false;
     }
 
+    //change this to return drone ID?? Could leave if just checking if new drone exists.
     public boolean searchDroneID(DroneDetails drone){
         try{
             String query = "SELECT * FROM drone WHERE id ='" +drone.getId()+"'";

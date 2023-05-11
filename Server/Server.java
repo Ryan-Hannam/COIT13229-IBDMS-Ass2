@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import javax.swing.*;
+
+import Domain.Database;
+
 import java.sql.*;
 
 /**
