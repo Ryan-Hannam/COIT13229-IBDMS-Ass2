@@ -194,7 +194,7 @@ public class Server extends JFrame implements ActionListener, Runnable {
         String actionString=e.getActionCommand();
         switch(actionString) {
             case "Delete Fire":
-             //   deleteFire();
+                deleteFire();
                 break;
                 
             case "Recall Drones":
@@ -239,10 +239,9 @@ public class Server extends JFrame implements ActionListener, Runnable {
         return recallStatus;
     }
     
+    //Begin admin functions
 
-
-    //begin old, non-database code
-
+    //convert this to use databse
     static void addDrone(Domain.DroneDetails tempDrone) {
         // Assumes drone is new until found otherwise
         boolean newDrone = true;
@@ -289,6 +288,7 @@ public class Server extends JFrame implements ActionListener, Runnable {
         // System.out.println(drones.size() + " Drone Objects");
      }
     
+    //convert this to use databse
     static void addFire(Domain.FireDetails tempFire) {
         
         /*
@@ -321,6 +321,7 @@ public class Server extends JFrame implements ActionListener, Runnable {
         
     }
     
+    //convert this to use databse
     static void readData() {
         // Reads ArrayList from binary file drones.bin
         try (
@@ -372,6 +373,7 @@ public class Server extends JFrame implements ActionListener, Runnable {
         outputLog(fires.size() + " fires loaded.");
     }
     
+    //convert this to use database
     static void saveData() {
         // Saves drones arraylist to drones.bin
         try (
@@ -426,27 +428,15 @@ public class Server extends JFrame implements ActionListener, Runnable {
         // Iterator goes through ArrayList until it finds the ID, removes the object from ArrayList
         // Originally used a for loop, didn't work for some reason
         // If fire existed sets boolean to true, else will output no fire found message
-        boolean fireExists = false;
+        //Database.deleteFire(intId);
         
-        Iterator<Domain.FireDetails> iterator = fires.iterator();
-            while (iterator.hasNext()) {
-                Domain.FireDetails p = iterator.next();
-                if (p.getId() == intId) {
-                    iterator.remove();
-                    outputLog("Fire " + intId + " removed.");
-                    fireExists = true;
-                    break;
-            }
-        }
-        
-        if (!fireExists) {
+        if (!Database.deleteFire(intId)) {
             outputLog("Fire " + intId + " not found.");
         }
+        else{
+            outputLog("Fire " + intId + " deleted");
+        }
     }
-
-    //end old non-database code
-    
-
     
     public void recallDrones() {
         // Checks if a recall is initiated
@@ -574,6 +564,8 @@ public class Server extends JFrame implements ActionListener, Runnable {
         }
     }
     
+    //end admin functions
+
     public static void outputLog(String message) {
         // Outputs message given through the output text area along with a newline
         outputText.append(message + "\n");

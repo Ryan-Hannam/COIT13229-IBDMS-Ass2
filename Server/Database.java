@@ -11,7 +11,7 @@ import java.sql.Statement;
 import java.util.*;
 
 public class Database {
-    private Connection connection;
+    private static Connection connection;
     public Database() {
         connection = DatabaseConnection.getConnection();
     }
@@ -144,9 +144,9 @@ public class Database {
         return false;
     }
 
-    public boolean deleteFire(FireDetails fireDetails){
+    public static boolean deleteFire(int fireID){
         try {
-            String query = "DELETE FROM fire WHERE id ='" +fireDetails.getId()+"'";
+            String query = "DELETE FROM fire WHERE id ='" +fireID+"'";
             PreparedStatement statement = connection.prepareStatement(query);
             int rowsDeleted = statement.executeUpdate();
             if (rowsDeleted > 0) {
