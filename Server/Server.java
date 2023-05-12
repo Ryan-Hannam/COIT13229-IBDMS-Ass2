@@ -12,14 +12,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import javax.swing.*;
 
 import Domain.Database;
+import Domain.DroneDetails;
+import Domain.FireDetails;
+import Domain.FiretruckDetails;
 
-import java.sql.*;
 
 /**
  *
@@ -247,49 +248,13 @@ public class Server extends JFrame implements ActionListener, Runnable {
     
     //Begin admin functions
 
-    //convert this to use databse
     static void addDrone(Domain.DroneDetails tempDrone) {
-        Boolean isSaved = Database.saveDroneDetails(tempDrone);
-
-        if(isSaved = true){
+        //attempt to save new drone
+        if(Database.saveDroneDetails(tempDrone)){
             outputLog("New Drone Registered. ID: " + tempDrone.getId() + " Name: " + tempDrone.getName());
         }
         outputLog("Something went wrong, try again later");
-        // Assumes drone is new until found otherwise
-        // boolean newDrone = true;
-        // boolean wasActive = false;
-        
-        /* Checks each drone object in the drones ArrayList to see
-        if the ID is already present, if it is just updates that drone's
-        Name, Position and Active Status. If this happens says the drone
-        is not new.
-        */
-        // for (Domain.DroneDetails p : drones) {
-        //         if (p.getId() == tempDrone.getId()) {
-                    
-        //             //Search for the drone's ID and update here
-
-        //             p.setName(tempDrone.getName());
-        //             p.setXpos(tempDrone.getXpos());
-        //             p.setYpos(tempDrone.getYpos());
-        //             //p.setActive(tempDrone.getActive());
-
-                    //newDrone = false;
-                    
-                //     if (p.getActive()) {
-
-                //     break;
-                // }
-        }
-        
-        // // If the drone is new, creates the drone object and adds it to the arraylist
-        // if (newDrone) {
-        //     Domain.DroneDetails drone = new Domain.DroneDetails(tempDrone.getId(), tempDrone.getName(), tempDrone.getXpos(), tempDrone.getYpos(), tempDrone.getActive());
-        //     drones.add(drone);
-        //     outputLog("New Drone Registered. ID: " + drone.getId() + " Name: " + drone.getName());
-        // }
-        
-        // // System.out.println(drones.size() + " Drone Objects");
+    }
     
     //convert this to use databse
     static void addFire(Domain.FireDetails tempFire) {
@@ -319,116 +284,64 @@ public class Server extends JFrame implements ActionListener, Runnable {
             fires.add(fire);
             outputLog("New Fire Spotted at " + fire.getXpos() + ", " + fire.getYpos() + " with intensity " + fire.getIntensity() + " burning area radius " + fire.getBurningAreaRadius() + ".");
         }
-        
-        
-        
     }
     
-    //convert this to use databse
     static void readData() {
-        // Reads ArrayList from binary file drones.bin
+        // Reads data in using Database() object's queries
         try {
-            //FileInputStream fileIn = new FileInputStream("drones.bin");
-            //ObjectInputStream objectIn = new ObjectInputStream(fileIn)) {
-            
             LinkedList<Domain.DroneDetails> tempDrones = Database.readDrone();
             outputLog(tempDrones.size() + " drones loaded");
-            //System.out.println(tempDrones.size());
         }
         catch(Exception e){
             System.out.println(e.getMessage());
         }
-
         try{
             LinkedList<Domain.FireDetails> tempFires = Database.readFire();
             outputLog(tempFires.size() + " fires loaded");
-           // System.out.println(tempFires.size());
         }
         catch(Exception e){
             System.out.println(e.getMessage());
         }
-
         try{
             LinkedList<Domain.FiretruckDetails> tempFiretrucks = Database.readFiretruck();
             outputLog(tempFiretrucks.size() + " firetrucks loaded");
-           // System.out.println(tempFiretrucks.size());
         }
         catch(Exception e){
             System.out.println(e.getMessage());
         }
-            /* If the file is empty the tempDrones arraylist will be null
-            If this is the case it will not set this temp arraylist to be
-            the main arraylist. */
-    //         if (tempDrones != null) {
-    //             drones = tempDrones;
-    //         }
-            
-    //     } catch(EOFException | FileNotFoundException e) {
-    //     } catch(IOException e) {e.printStackTrace();
-	// } catch(ClassNotFoundException ex){ex.printStackTrace();
-    //     }
-        
-    //     outputLog(drones.size() + " drones loaded.");
-        
-    //     // Reads file, each variable it checks is seperated by the delimiter, the comma
-    //     // Gets variables from each line and adds it to a fire object then the ArrayList
-    //     String line = "";
-    //     String csvDelimiter = ",";
-        
-    //     try (BufferedReader br = new BufferedReader(new FileReader("fires.csv"))) {
-        
-    //         // Read heading line
-    //         br.readLine();
-            
-    //         // Read remaining lines
-    //         while ((line = br.readLine()) != null) {
-    //            String[] data = line.split(csvDelimiter);
-    //            int id = Integer.parseInt(data[0]);
-    //            int isActive = Integer.parseInt(data[1]);
-    //            int intensity = Integer.parseInt(data[2]);
-    //            Double burningAreaRadius = Double.parseDouble(data[3]);
-    //            int xpos = Integer.parseInt(data[4]);
-    //            int ypos = Integer.parseInt(data[5]);     
-    //            Domain.FireDetails fire = new Domain.FireDetails(id, isActive, intensity, burningAreaRadius, xpos, ypos);
-    //            fires.add(fire);
-    //      }
-    //     } catch (IOException e) {
-    //        e.printStackTrace();
-    //     } catch (NumberFormatException e) { e.printStackTrace();
-    //     }
-        
-    //     outputLog(fires.size() + " fires loaded.");
     }
     
-    //convert this to use database
-    // static void saveData() {
-    //     // Saves drones arraylist to drones.bin
-    //     try (
-    //         FileOutputStream fileOut = new FileOutputStream("drones.bin");
-    //         ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)
-    //         ) {
-    //         objectOut.writeObject(drones);
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //     }
-        
-    //     // Saves each object in fires ArrayList to fires.csv
-    //     // Uses object .toCSV() to format the string with variables having commas between
-    //     try {
-    //         FileWriter writer = new FileWriter("fires.csv", false);
-            
-    //         // Writes heading line with column names
-    //         writer.write("Fire ID,X Position,Y Position,Reporting Drone ID,Severity\n");
-            
-    //         for (Domain.FireDetails p : fires) {
-    //             //TODO: write to database here.
-    //             //     writer.write(p.toCSV() + "\n");
-    //         }
-    //         writer.close();
-    //     } catch(IOException e) {e.printStackTrace();
-    //     }
-    // }
-    
+    static void saveData() {
+        // Saves drones arraylist to database
+        try {
+            for (DroneDetails drones : drones){
+                Database.saveDroneDetails(drones);
+            }
+            }
+            catch (Exception e) {
+            outputLog(e.getMessage());
+        } 
+        //saves fires arraylist into database
+        try {
+            for(FireDetails fires : fires){
+                Database.saveFireDetails(fires);
+            }
+        }
+        catch (Exception e) {
+        outputLog(e.getMessage());
+        }
+        //saves firetruck arraylist into database
+        try {
+            for(FiretruckDetails trucks : trucks){
+                Database.saveFiretruckDetails(trucks);
+            }
+        }
+        catch (Exception e) {
+        outputLog(e.getMessage());
+        }
+        outputLog("All Data saved successfully");
+    }
+
     public void deleteFire() {
         // Triggered by Delete Fire Button
         // intId is the id that'll be entered
