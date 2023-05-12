@@ -16,6 +16,7 @@ import java.util.LinkedList;
 
 import javax.swing.*;
 
+import Client.Drone;
 import Domain.Database;
 import Domain.DroneDetails;
 import Domain.FireDetails;
@@ -385,7 +386,6 @@ public class Server extends JFrame implements ActionListener, Runnable {
         int intId = -1;
         int newX = -0;
         int newY = -0;
-        boolean droneExists = false;
         
         /*
         Opens Option Pane prompting for a Drone ID
@@ -403,23 +403,7 @@ public class Server extends JFrame implements ActionListener, Runnable {
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(null, "ID must be numerical.");
             }
-        }
-        
-        // Searches for ArrayList to check if a drone with the ID entered exists
-        // If drone is active then it is good to be moved and droneExists is changed to true
-        for (Domain.DroneDetails p : drones) {
-            if (p.getId() == intId) {
-                if (p.getActive()) {
-                    droneExists = true;
-                }
-            }
-        }
-        
-        // If no drone exists that is active then droneExists will be false and the user will be given an error message
-        if (!droneExists) {
-            JOptionPane.showMessageDialog(null, "Drone with ID " + intId + " does not exist or is not active.");
-            return;
-        }
+        }       
         
         // Opens option pane prompting user to enter an X position for the drone to be moved to
         while (true) {
@@ -448,7 +432,16 @@ public class Server extends JFrame implements ActionListener, Runnable {
                 JOptionPane.showMessageDialog(null, "ID must be numerical.");
             }
         }
-        
+
+        //the code below should be modified to search by int or a temporary DroneDetails object, and then update the record
+        //but it doesn't :(
+
+        // If no drone exists that is active then droneExists will be false and the user will be given an error message
+        if (Database.searchDroneID(intId).size() != 1) {
+            JOptionPane.showMessageDialog(null, "Drone with ID " + intId + " does not exist or is not active.");
+            return;
+        }
+
         // Removes drone id from hash map in case it's there
         newXPositions.remove(intId);
         newYPositions.remove(intId);
@@ -639,7 +632,7 @@ class Connection extends Thread {
             }
             
             // Sends tempDrone to the addDrone function to get it in the ArrayList
-            // Server.addDrone(tempDrone);
+            Domain.Database.saveDroneDetails(tempDrone);
             
             System.out.println(tempDrone);
             

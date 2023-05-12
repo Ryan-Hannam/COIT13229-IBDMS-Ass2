@@ -77,7 +77,7 @@ public class Database {
         return firetruckDetails;
     }
 
-    public boolean saveFireDetails(FireDetails fireDetails) {
+    public static boolean saveFireDetails(FireDetails fireDetails) {
         try {
             String query = "INSERT INTO fire (id, isActive, intensity," +
                     " burningAreaRadius, xpos, ypos) VALUES (?, ?, ?, ?, ?, ?)";
@@ -121,7 +121,7 @@ public class Database {
         return false;
     }
 
-    public boolean saveFiretruckDetails(FiretruckDetails firetruckDetails) {
+    public static boolean saveFiretruckDetails(FiretruckDetails firetruckDetails) {
         try {
             String query = "INSERT INTO firetruck (id, name, designatedFireId) VALUES (?, ?, ?)";
 
@@ -156,18 +156,53 @@ public class Database {
     }
 
     //change this to return drone ID?? Could leave if just checking if new drone exists.
-    public boolean searchDroneID(DroneDetails drone){
+    public static LinkedList<DroneDetails> searchDroneID(int intId){
+        LinkedList<DroneDetails> droneDetails = new LinkedList<>();
         try{
-            String query = "SELECT * FROM drone WHERE id ='" +drone.getId()+"'";
+            String query = "SELECT * FROM drone WHERE id ='" +intId+"'";
             PreparedStatement statement = connection.prepareStatement(query);
             int rowsFound = statement.executeUpdate();
             if(rowsFound == 1){
-                return true;
+                return droneDetails;
             }
         }
         catch(Exception e){
             System.out.println(e.getMessage());
         }
-        return false;
+        return droneDetails;
     }
+
+    // public static LinkedList<DroneDetails> getDroneById(int id){
+    //     LinkedList<DroneDetails> droneDetails = new LinkedList<>();
+    //     try{
+    //         String query = "SELECT * FROM drone WHERE id ='" +id+"'";
+    //         PreparedStatement statement = connection.prepareStatement(query);
+    //         int rowsFound = statement.executeUpdate();
+    //         if(rowsFound == 1){
+    //             return droneDetails;
+    //         }
+    //     }
+    //     catch(Exception e){
+    //         System.out.println(e.getMessage());
+    //     }
+    //     return droneDetails;
+    // }
+
+    // public static boolean moveDrone(LinkedList<DroneDetails> droneDetails){
+    //     String query = "INSERT INTO drone (xpos, ypos) VALUES (?, ?) WHERE id = ?";
+
+    //     PreparedStatement statement = connection.prepareStatement(query);
+
+    //     statement.setInt(3,droneDetails.getId());
+    //     statement.setString(1, droneDetails.getXpos());
+    //     statement.setInt(2,droneDetails.getYpos());
+    //     int rowsInserted = statement.executeUpdate();
+    //     if (rowsInserted > 0) {
+    //         return true;
+    //     }
+    // catch(Exception e) {
+    //     System.out.println(e.getMessage());
+    // }
+    // return false;
+    // }
 }

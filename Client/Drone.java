@@ -14,7 +14,7 @@ import java.io.*;
 import java.util.ArrayList;
 /**
  *
- * @author diamo
+ * @author diamo, modified by group 4
  */
 public class Drone extends Thread {
 
