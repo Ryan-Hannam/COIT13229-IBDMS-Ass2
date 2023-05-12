@@ -347,11 +347,6 @@ public class Server extends JFrame implements ActionListener, Runnable {
         // intId is the id that'll be entered
         int intId = -1;
         
-        /*
-        Opens Option Pane prompting for a Fire ID
-        If cancel is pressed, null will be returned causing the loop to break
-        otherwise it'll attempt to parse the ID to int, if this fails the user will be reprompted after an error message
-        */
         while (true) {
             String enteredId = JOptionPane.showInputDialog(null, "Enter a Fire ID");
             if (enteredId == null) {
@@ -364,11 +359,6 @@ public class Server extends JFrame implements ActionListener, Runnable {
                 JOptionPane.showMessageDialog(null, "ID must be numerical.");
             }
         }
-        
-        // Iterator goes through ArrayList until it finds the ID, removes the object from ArrayList
-        // Originally used a for loop, didn't work for some reason
-        // If fire existed sets boolean to true, else will output no fire found message
-        //Database.deleteFire(intId);
         
         if (!Database.deleteFire(intId)) {
             outputLog("Fire " + intId + " not found.");
