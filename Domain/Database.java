@@ -12,7 +12,7 @@ public class Database {
         connection = DatabaseConnection.getConnection();
     }
     
-    public LinkedList<FireDetails> readFire(){
+    public static LinkedList<FireDetails> readFire(){
         LinkedList<FireDetails> fireDetails = new LinkedList<>();
         try {
             String query = "SELECT * FROM fire";
@@ -35,7 +35,7 @@ public class Database {
         return fireDetails;
     }
 
-    public LinkedList<DroneDetails> readDrone(){
+    public static LinkedList<DroneDetails> readDrone(){
         LinkedList<DroneDetails> droneDetails = new LinkedList<>();
         try {
             String query = "SELECT * FROM drone";
@@ -56,7 +56,7 @@ public class Database {
         return droneDetails;
     }
 
-    public LinkedList<FiretruckDetails> readFiretruck(){
+    public static LinkedList<FiretruckDetails> readFiretruck(){
         LinkedList<FiretruckDetails> firetruckDetails = new LinkedList<>();
         try {
             String query = "SELECT * FROM firetrucks";
@@ -99,9 +99,9 @@ public class Database {
         return false;
     }
 
-    public boolean saveDroneDetails(DroneDetails droneDetails) {
+    public static boolean saveDroneDetails(DroneDetails droneDetails) {
         try {
-            String query = "INSERT INTO fire (id, name, xpos," +
+            String query = "INSERT INTO drone (id, name, xpos," +
                     " ypos) VALUES (?, ?, ?, ?)";
 
             PreparedStatement statement = connection.prepareStatement(query);
@@ -122,8 +122,7 @@ public class Database {
 
     public boolean saveFiretruckDetails(FiretruckDetails firetruckDetails) {
         try {
-            String query = "INSERT INTO fire (id, isActive, intensity," +
-                    " burningAreaRadius, xpos, ypos) VALUES (?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO firetruck (id, name, designatedFireId) VALUES (?, ?, ?)";
 
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1,firetruckDetails.getId());
