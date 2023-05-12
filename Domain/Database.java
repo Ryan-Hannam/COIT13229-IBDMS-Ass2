@@ -8,7 +8,8 @@ import java.util.*;
 
 public class Database {
     private static Connection connection;
-    public Database() {
+    
+    public static void Database() {
         connection = DatabaseConnection.getConnection();
     }
     

@@ -218,7 +218,8 @@ public class Server extends JFrame implements ActionListener, Runnable {
     
     public static void main(String[] args) {
         // Calls function to read data from files
-       // readData();
+        Domain.Database.Database();
+        readData();
         
         // Starts thread to update map and GUI because that's how it works apparently
         Server obj = new Server();
@@ -332,6 +333,7 @@ public class Server extends JFrame implements ActionListener, Runnable {
             
             LinkedList<Domain.DroneDetails> tempDrones = Database.readDrone();
             outputLog(tempDrones.size() + " drones loaded");
+            //System.out.println(tempDrones.size());
         }
         catch(Exception e){
             System.out.println(e.getMessage());
@@ -340,6 +342,7 @@ public class Server extends JFrame implements ActionListener, Runnable {
         try{
             LinkedList<Domain.FireDetails> tempFires = Database.readFire();
             outputLog(tempFires.size() + " fires loaded");
+           // System.out.println(tempFires.size());
         }
         catch(Exception e){
             System.out.println(e.getMessage());
@@ -348,6 +351,7 @@ public class Server extends JFrame implements ActionListener, Runnable {
         try{
             LinkedList<Domain.FiretruckDetails> tempFiretrucks = Database.readFiretruck();
             outputLog(tempFiretrucks.size() + " firetrucks loaded");
+           // System.out.println(tempFiretrucks.size());
         }
         catch(Exception e){
             System.out.println(e.getMessage());
