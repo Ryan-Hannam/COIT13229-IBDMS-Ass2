@@ -1,13 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+//package definition
 package Client;
 
 /**
  *
  * @author meika
  */
+
+ //component imports
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -19,6 +18,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
+//begin ClientAppController class
 
 public class ClientAppController {
   
@@ -68,3 +69,5 @@ public class ClientAppController {
         txtDroneId.setText("");
     }    
   }
+
+  //end ClientAppController class

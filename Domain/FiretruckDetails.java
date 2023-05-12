@@ -1,5 +1,7 @@
+//package definition
 package Domain;
 
+//component imports
 import java.io.Serializable;
 
 public class FiretruckDetails implements Serializable {

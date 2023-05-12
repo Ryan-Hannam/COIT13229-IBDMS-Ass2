@@ -1,11 +1,14 @@
+//package definition
 package Domain;
 
+//component imports
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.*;
 
+//begin Database class
 public class Database {
     private static Connection connection;
     
@@ -13,6 +16,9 @@ public class Database {
         connection = DatabaseConnection.getConnection();
     }
     
+    //begin queries
+
+    //reads all fires in the database and stores in a LinkedList
     public static LinkedList<FireDetails> readFire(){
         LinkedList<FireDetails> fireDetails = new LinkedList<>();
         try {
@@ -36,6 +42,7 @@ public class Database {
         return fireDetails;
     }
 
+    //reads all drones in the database and stores in a LinkedList
     public static LinkedList<DroneDetails> readDrone(){
         LinkedList<DroneDetails> droneDetails = new LinkedList<>();
         try {
@@ -57,6 +64,7 @@ public class Database {
         return droneDetails;
     }
 
+    //reads all firetrucks in the database and stores in a LinkedList
     public static LinkedList<FiretruckDetails> readFiretruck(){
         LinkedList<FiretruckDetails> firetruckDetails = new LinkedList<>();
         try {
@@ -77,6 +85,7 @@ public class Database {
         return firetruckDetails;
     }
 
+    //saves all fires in memory (new and current) to the database
     public static boolean saveFireDetails(FireDetails fireDetails) {
         try {
             String query = "INSERT INTO fire (id, isActive, intensity," +
@@ -100,6 +109,7 @@ public class Database {
         return false;
     }
 
+    //saves all drones in memory (new and current) to the database
     public static boolean saveDroneDetails(DroneDetails droneDetails) {
         try {
             String query = "INSERT INTO drone (id, name, xpos," +
@@ -121,6 +131,7 @@ public class Database {
         return false;
     }
 
+    //saves all firetrucks in memory (new and current) to the database
     public static boolean saveFiretruckDetails(FiretruckDetails firetruckDetails) {
         try {
             String query = "INSERT INTO firetruck (id, name, designatedFireId) VALUES (?, ?, ?)";
@@ -140,6 +151,7 @@ public class Database {
         return false;
     }
 
+    //deletes specific fire in memory from the database
     public static boolean deleteFire(int fireID){
         try {
             String query = "DELETE FROM fire WHERE id ='" +fireID+"'";
@@ -155,7 +167,8 @@ public class Database {
         return false;
     }
 
-    //change this to return drone ID?? Could leave if just checking if new drone exists.
+    //searches for a drone by ID
+    //needed to make this construct an object for moving a drone.
     public static LinkedList<DroneDetails> searchDroneID(int intId){
         LinkedList<DroneDetails> droneDetails = new LinkedList<>();
         try{
@@ -205,4 +218,8 @@ public class Database {
     // }
     // return false;
     // }
+
+    //end queries
+    
 }
+//end Databse class

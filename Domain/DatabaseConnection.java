@@ -1,13 +1,21 @@
+//package definition
 package Domain;
 
+//component importers
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-public class DatabaseConnection {
-    private static Connection connection = null;
-    private DatabaseConnection() {
+//begin DatabaseConnection class
 
+public class DatabaseConnection {
+    //instantiates connection
+    private static Connection connection = null;
+    
+    //null constructor
+    private DatabaseConnection() {
     }
+
+    //attempts to get a connection to the database using preset username and password
     public static Connection getConnection() {
         if(connection == null) {
             try {
@@ -20,3 +28,5 @@ public class DatabaseConnection {
         return connection;
     }
 }
+
+//end DatabaseConnection class

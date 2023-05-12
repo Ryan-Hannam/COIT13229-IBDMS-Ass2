@@ -1,10 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+//package definition
 package Client;
 
+//component imports
 import java.util.Random;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -16,6 +13,8 @@ import java.util.ArrayList;
  *
  * @author diamo, modified by group 4
  */
+
+//begin Drone class
 public class Drone extends Thread {
 
     static Domain.DroneDetails drone; // Drone Object
@@ -302,3 +301,4 @@ public class Drone extends Thread {
         }
     } 
 }
+//end Drone class

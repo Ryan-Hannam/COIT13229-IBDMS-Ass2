@@ -1,10 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+//package definition
 package Server;
 
+//component imports
 import java.awt.*;
 import java.net.*;
 import java.io.*;
@@ -13,10 +10,9 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-
 import javax.swing.*;
 
-import Client.Drone;
+//pacage and class imports
 import Domain.Database;
 import Domain.DroneDetails;
 import Domain.FireDetails;
@@ -25,8 +21,10 @@ import Domain.FiretruckDetails;
 
 /**
  *
- * @author diamo
+ * @author diamo, modified by group 4
  */
+
+ //begin Server class
 public class Server extends JFrame implements ActionListener, Runnable {
     
     // If recall has been called
@@ -100,7 +98,7 @@ public class Server extends JFrame implements ActionListener, Runnable {
                 g.drawString("Fire " + p.getId() + " (" + severity + ")", x - 30, y - 5);
             }
 			
-            // Draw firetrucks as blue rectangles with truck id
+            // Draw firetrucks as green rectangles with truck id
             for (Domain.FiretruckDetails p : trucks) {   
                 //get the designated fire details
                 Domain.FireDetails f = fires.get(p.getDesignatedFireID()); 
@@ -108,7 +106,7 @@ public class Server extends JFrame implements ActionListener, Runnable {
                 int x = (100 - f.getXpos()) * 2 + 14; 
                 int y = (100 - f.getYpos()) * 2;
                 int size = 20;
-                g.setColor(Color.BLUE);
+                g.setColor(Color.GREEN);
                 g.fillRect(x - size/2, y - size/2, size, size);
                 g.setColor(Color.BLACK);
                 g.drawString("Truck " + p.getId(), x - 30, y - 5);          
@@ -116,6 +114,7 @@ public class Server extends JFrame implements ActionListener, Runnable {
         }
     }
     
+    //null constructor
     Server() {
         // Sets settings for java swing GUI Frame
         super("Server GUI");
@@ -218,11 +217,12 @@ public class Server extends JFrame implements ActionListener, Runnable {
         }
     }
     
+    //main
     public static void main(String[] args) {
         // Calls function to read data from files
         Domain.Database.Database();
         readData();
-        
+
         // Starts thread to update map and GUI because that's how it works apparently
         Server obj = new Server();
         Thread thread = new Thread(obj);
@@ -257,32 +257,15 @@ public class Server extends JFrame implements ActionListener, Runnable {
         outputLog("Something went wrong, try again later");
     }
     
-    //convert this to use databse
     static void addFire(Domain.FireDetails tempFire) {
-        
-        /*
-        Assigns ID to the new fire object then adds it to the ArrayList
-        If the fire ArrayList is empty it will just give the Fire an ID of 0
-        If it's not it'll find the highest Fire ID and set it to one above that
-        Then makes a fire object and adds it to the arraylist and prints fire details
-        */
+        //attempts to save new fire
         if (fires.isEmpty()) {
             Domain.FireDetails fire = new Domain.FireDetails(0, tempFire.getIsActive(), tempFire.getIntensity(), tempFire.getBurningAreaRadius(), tempFire.getXpos(), tempFire.getYpos());
-            fires.add(fire);
+            Database.saveFireDetails(fire);
             outputLog("New Fire Spotted at " + fire.getXpos() + ", " + fire.getYpos() + " with intensity " + fire.getIntensity() + " burning area radius " + fire.getBurningAreaRadius() + ".");
-        } else {
-            int max = 0;
-            
-            for (Domain.FireDetails p : fires) {
-                if (p.getId() > max) {
-                    max = p.getId();
-                }
-            }
-            
-            int fireId = max + 1;
-            
-            Domain.FireDetails fire = new Domain.FireDetails(fireId, tempFire.getIsActive(), tempFire.getIntensity(), tempFire.getBurningAreaRadius(), tempFire.getXpos(), tempFire.getYpos());
-            fires.add(fire);
+        } else {      
+            Domain.FireDetails fire = new Domain.FireDetails(tempFire.getId(), tempFire.getIsActive(), tempFire.getIntensity(), tempFire.getBurningAreaRadius(), tempFire.getXpos(), tempFire.getYpos());
+            Database.saveFireDetails(fire);
             outputLog("New Fire Spotted at " + fire.getXpos() + ", " + fire.getYpos() + " with intensity " + fire.getIntensity() + " burning area radius " + fire.getBurningAreaRadius() + ".");
         }
     }
@@ -380,6 +363,7 @@ public class Server extends JFrame implements ActionListener, Runnable {
         }
     }
     
+    //not working. Can receive data, but query doesn't execute
     public void moveDrone() {
         // Triggered by move drone button
         // Initialisation of variables, -0 does not exist as a coordinate
@@ -489,6 +473,7 @@ public class Server extends JFrame implements ActionListener, Runnable {
     
     //end admin functions
 
+    //write text to GUI's log
     public static void outputLog(String message) {
         // Outputs message given through the output text area along with a newline
         outputText.append(message + "\n");
@@ -506,7 +491,10 @@ public class Server extends JFrame implements ActionListener, Runnable {
         }
     }
 }
+//end Server class
 
+
+//begin Connection class
 class Connection extends Thread {
     // Sets up input and output streams for socket
     ObjectInputStream in;
@@ -645,3 +633,4 @@ class Connection extends Thread {
 	} finally{ try {clientSocket.close();}catch (IOException e){/*close failed*/}}
     }
 }
+//end Connection class
